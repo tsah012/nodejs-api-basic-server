@@ -6,11 +6,6 @@ const config = require('../configuration/app');
 
 const router = express.Router();
 
-
-// router.get("/login", auth.isNotAuth, function (req, res) {
-//     res.sendFile(path.join(config.root, 'client/pages/login/index.html'));
-// });
-
 router.post("/login", auth.isNotAuth, passport.authenticate('local',
     { successRedirect: '/success-login', failureRedirect: '/failure-login', failureFlash: true }));
 
@@ -18,10 +13,6 @@ router.delete("/logout", auth.isAuth, function (req, res) {
     req.logOut();
     res.send({ status: true });
 });
-
-// router.get("/register", auth.isNotAuth, function (req, res) {
-//     res.sendFile(path.join(config.root, 'client/pages/register/index.html'));
-// });
 
 router.get("/success-login", function (req, res) {
     res.send({ status: true });
