@@ -34,12 +34,12 @@ module.exports.getUserByMail = async function (_mail) {
     }
 }
 
-module.exports.addUser = async function (_name, _mail, _password, _admin = false, _books = []) {
+module.exports.addUser = async function (_name, _mail, _password, _admin = false, _data = []) {
     try {
         validateUserFields(_name, _mail, _password);
         const db = mongo.getDB();
         const hashedPassword = await bcrypt.hash(_password, 10);
-        const user = await db.collection(usersCol).insertOne({ name: _name, mail: _mail, password: hashedPassword, admin: _admin, books: _books });
+        const user = await db.collection(usersCol).insertOne({ name: _name, mail: _mail, password: hashedPassword, admin: _admin, data: _data });
         return user;
     }
     catch (error) {
