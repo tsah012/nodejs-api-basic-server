@@ -15,7 +15,7 @@ router.post('/user/add', async function (req, res, next) {
 });
 
 
-// Authenticated routes - only if user is loggen in
+// Authenticated routes - only if user is logged in
 //------------------------------------------------------------------
 
 router.get('/user', auth.isAuth, async function (req, res, next) {
