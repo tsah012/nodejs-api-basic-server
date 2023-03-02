@@ -54,14 +54,6 @@ server.use(appAuthorization);
 server.use('/api', usersRouter);
 server.use('/admin', adminRouter);
 
-// server.get("/", auth.isAuth, function (req, res) {
-//     res.sendFile(path.join(config.root, 'client/pages/home/index.html'));
-// });
-
-// server.get('/library', auth.isAuth, async function (req, res) {
-//     res.sendFile(path.join(config.root, 'client/pages/library/index.html'));
-// });
-
 server.use(errorHandler);
 mongo.connect(function () {
     server.listen(config.port, function () {
