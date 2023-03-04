@@ -1,3 +1,4 @@
+require('dotenv').config();
 const config = require("./custom_modules/configuration/app");
 const passportConfiguration = require('./custom_modules/configuration/passport/local');
 const usersRouter = require("./custom_modules/routers/users");
@@ -23,10 +24,10 @@ const server = express();
 
 const mongoSessionStore = new MongoDBStore({
     uri: config.dbConnectionString + config.dbName,
-    collection: config.storeCollection
+    collection: config.sessionsCollection
 });
 
-server.use(cors({ origin: config.host_url, credentials: true, optionsSuccessStatus: 200 }));
+server.use(cors({ origin: config.client_base_url, credentials: true, optionsSuccessStatus: 200 }));
 server.use(cookieParser());
 server.use(morgan('dev'));
 server.use(express.static(path.join(config.root, 'client')));
