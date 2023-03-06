@@ -1,5 +1,5 @@
 {
-  "name": "books-directory",
+  "name": "nodejs-api-basic-server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tsah012/books-directory.git"
+    "url": "git+https://github.com/tsah012/nodejs-api-basic-server.git"
   },
   "author": "Tsah Bardugo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tsah012/books-directory/issues"
+    "url": "https://github.com/tsah012/nodejs-api-basic-server/issues"
   },
-  "homepage": "https://github.com/tsah012/books-directory#readme",
+  "homepage": "https://github.com/tsah012/nodejs-api-basic-server#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "connect-mongodb-session": "^2.4.1",
