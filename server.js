@@ -3,12 +3,10 @@ const config = require("./custom_modules/configuration/app");
 const passportConfiguration = require('./custom_modules/configuration/passport/local');
 const usersRouter = require("./custom_modules/routers/users");
 const adminRouter = require('./custom_modules/routers/admin');
-const auth = require('./custom_modules/routers/authMiddlewares');
 const appAuthorization = require('./custom_modules/routers/appAuthentication');
-const usersDAL = require('./custom_modules/DAL/users');
-const mongo = require('./custom_modules/mongo');
 const dbLogger = require('./custom_modules/logger');
 
+const mongoose = require('mongoose');
 const path = require('path');
 const express = require('express');
 const flash = require('express-flash');
@@ -54,13 +52,9 @@ passportConfiguration.configure(passport);
 server.use(appAuthorization);
 server.use('/api', usersRouter);
 server.use('/admin', adminRouter);
-
 server.use(errorHandler);
-mongo.connect(function () {
-    server.listen(config.port, function () {
-        console.log("listening on port", config.port);
-    });
-});
+
+connectToDBAndStartServer();
 
 // Error handler middleware in order to avoid crushing of the server
 function errorHandler(err, req, res, next) {
@@ -68,5 +62,19 @@ function errorHandler(err, req, res, next) {
         console.log(err);
         dbLogger.saveLog(err);
         res.send({ status: false, message: err.clientMessage || 'Error in server' });
+    }
+}
+
+async function connectToDBAndStartServer() {
+    try {
+        await mongoose.connect(config.dbConnectionString + config.dbName);
+        server.listen(config.port, () => {
+            console.log("listening on port", config.port);
+        });
+
+    } catch (error) {
+        console.log(e);
+        dbLogger.saveLog(e);
+        throw e;
     }
 }

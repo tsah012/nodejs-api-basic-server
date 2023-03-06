@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/user/add', async function (req, res, next) {
     try {
-        let user = await usersDAL.addUser(req.body.name, req.body.mail, req.body.password);
+        await usersDAL.addUser(req.body.name, req.body.mail, req.body.password);
         res.status(httpStatusCodes.CREATED).send({ status: true, message: 'Request ended successfully' });
     }
     catch (err) {
