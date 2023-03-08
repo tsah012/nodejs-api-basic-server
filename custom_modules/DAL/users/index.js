@@ -2,7 +2,7 @@ const userModel = require('./userModel');
 const bcrypt = require('bcrypt');
 
 
-module.exports.getUserById = async function (userId) {
+module.exports.getUserById = async (userId) => {
     try {
         const user = await userModel.findById(userId);
         if (!user) {
@@ -16,7 +16,7 @@ module.exports.getUserById = async function (userId) {
     }
 }
 
-module.exports.getUserByMail = async function (_mail) {
+module.exports.getUserByMail = async (_mail) => {
     try {
         const user = await userModel.findOne({ mail: _mail });
         if (!user) {
@@ -30,7 +30,31 @@ module.exports.getUserByMail = async function (_mail) {
     }
 }
 
-module.exports.addUser = async function (_name, _mail, _password, _admin = false, _data = []) {
+module.exports.updatePassword = async (id, password) => {
+    try {
+        if (!validatePassword(password)) {
+            let error = new Error();
+            error.clientMessage = "password can not be empty string";
+            throw error;
+        }
+
+        const user = await this.getUserById(id);
+        if (!user) {
+            let error = new Error();
+            error.clientMessage = "User not found";
+            throw error;
+        }
+
+        const hashedPassword = await bcrypt.hash(_password, 10);
+        user.password = hashedPassword;
+        await user.save();
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+module.exports.addUser = async (_name, _mail, _password, _admin = false, _data = []) => {
     try {
         validateUserFields(_name, _mail, _password);
         const hashedPassword = await bcrypt.hash(_password, 10);

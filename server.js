@@ -4,7 +4,7 @@ const passportConfiguration = require('./custom_modules/configuration/passport/l
 const usersRouter = require("./custom_modules/routers/users");
 const adminRouter = require('./custom_modules/routers/admin');
 const appAuthorization = require('./custom_modules/routers/appAuthentication');
-const dbLogger = require('./custom_modules/logger');
+const dbLogger = require('./custom_modules/services/logger');
 
 const mongoose = require('mongoose');
 const path = require('path');

@@ -1,4 +1,4 @@
-const config = require('../configuration/app');
+const config = require('../../configuration/app');
 const winston = require('winston');
 const format = winston.format;
 require('winston-mongodb');
@@ -17,13 +17,13 @@ const logger = winston.createLogger({
     ],
 });
 
-function saveLog(logObject){
+function saveLog(logObject) {
     try {
         logObject.localTimestamp = Date();
-        logger.error('new error log. details in metadata', {metadata: logObject});
+        logger.error('new error log. details in metadata', { metadata: logObject });
     } catch (error) {
         console.log('There was an error during adding a log to mongodb. error:\n' + error);
     }
 }
 
-module.exports = {saveLog};
+module.exports = { saveLog };
