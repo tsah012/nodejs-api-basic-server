@@ -45,7 +45,7 @@ module.exports.updatePassword = async (id, password) => {
             throw error;
         }
 
-        const hashedPassword = await bcrypt.hash(_password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         user.password = hashedPassword;
         await user.save();
     }

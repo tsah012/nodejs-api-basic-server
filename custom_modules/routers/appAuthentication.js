@@ -25,14 +25,14 @@ router.post('/forgot-password', auth.isNotAuth, async function (req, res, next) 
         }
 
         // Here we create token
-        const token = jwt.sign({ id: user.id }, config.secret + user.password, { expiresIn: '5m' });
+        const token = jwt.sign({ id: user.id, oldPassword: user.password }, config.secret, { expiresIn: '5m' });
 
         const resetLink = `${config.client_base_url}/reset-password/${token}`
 
         await mailer.sendMail(user.mail,
             'Reset-Password',
-            'Please click on the following link in order to reset password',
-            `<a href=${token}> Click Here </a>`)
+            `Reset password link: ${resetLink}`,
+            `In order to reset password <a href=${resetLink}> Click Here </a>`)
 
         res.send({ status: true, message: 'A link for reseting password sent to the given mail' });
     }
@@ -49,7 +49,18 @@ router.post('/reset-password', auth.isNotAuth, async function (req, res, next) {
             throw error;
         }
 
-        const verifiedToken = jwt.verify(req.body.resetToken);
+        const verifiedToken = jwt.verify(req.body.resetToken, config.secret);
+
+        // Check if token already used successfully - if yes, do not update password again.
+        // If token not used - user password in db and password that signed in token should be the same,
+        // Otherwise - password already changed with this token.
+        const user = await usersDAL.getUserById(verifiedToken.id);
+        if (user.password !== verifiedToken.oldPassword) {
+            let error = new Error();
+            error.clientMessage = "Reset link already used";
+            throw error;
+        }
+
         await usersDAL.updatePassword(verifiedToken.id, req.body.newPassword);
         res.send({ status: true, message: 'Password was successfully updated' });
     }
