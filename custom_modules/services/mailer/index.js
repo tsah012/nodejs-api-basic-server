@@ -6,7 +6,8 @@ const transporter = nodeMailer.createTransport({
     auth: {
         user: config.mailBox,
         pass: config.mailPassword
-    }
+    },
+    from: config.mailBox
 });
 
 module.exports.sendMail = async (recipient, subject, textContent, htmlContent) => {
